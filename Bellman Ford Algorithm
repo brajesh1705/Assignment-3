@@ -1,32 +1,21 @@
-#include <iostream>
-#include <algorithm>
-#include <math.h>
-#include <cstring>
-#include <iomanip>
-#include <stdio.h>
-#include <limits>
-#include <map>
-#include  <set>
-#include <list>
-#include <vector>
-#include <ctime>
-#include <stack>
+#include<bits/stdc++.h>
+#define ll long long
 #define mod 1000000007LL
+#define sz(x) x.size()
 #define inf 1000000000
 using namespace std;
-vector<pair<long long,long long>> g;
-map<pair<long long,long long>,int>weight;
+vector<pair<ll,ll>> g;
+map<pair<ll,ll>,int>weight;
 int n;
-void solve(int root)
+void bf(int src)
 {
 	int distance[n+1];
-
 	for(int i=1;i<=n;i++)
 		distance[i]=inf;
-	distance[root]=0;
+	distance[src]=0;
 	for(int i=0;i<n-1;i++)
 	{
-		for(int j=0;j<g.size();j++)
+		for(int j=0;j<sz(g);j++)
 		{
 			int u=g[j].first;
 			int v=g[j].second;
@@ -35,44 +24,47 @@ void solve(int root)
 		}
 
 	}
-	for(int i=0;i<g.size();i++)
+	for(int i=0;i<sz(g);i++)
 	{
 		int u=g[i].first;
 		int v=g[i].second;
 		if(distance[u]+weight[make_pair(u,v)]<distance[v]&&distance[u]!=inf)
 		{
-			cout<<"spanning tree of "<<root<<" contains negative cycle\n";
+			cout<<"spanning tree of "<<src<<" contains negative cycle"<<endl;
 			break;
 		}
 	}
-	cout<<"distance from "<<root<<"->";
+	cout<<"distances from "<<src<<"->";
 	for(int i=1;i<=n;i++)
 	{
+			if(distance[i]!=1000000000)
 			cout<<distance[i]<<" ";
+			else cout<<"Inf ";
 	}
 	cout<<endl;
 	return;
 }
 int main()
 {
-    
-    int startTime=clock();
-    cout<<"enter the number of vertices\n";
+    double start_s=clock();
+    cout<<"enter the number of vertices"<<endl;
   	cin>>n;
-  	cout<<"enter i j w\n";
- 	int i,j,w;
-  	cin>>i>>j>>w;
-  	while (w)
-  	{
-  		g.push_back(make_pair(i,j));
-  		weight[make_pair(i,j)]=a;
-  		cin>>i>>j>>w;
-  	}
-  	cout<<"By bellman-ford algorithm\n";
+  	cout<<"enter the input in form of adjacency matrix"<<endl;
+  	int a;
   	for(int i=1;i<=n;i++)
-  		solve(i);
-  	int stopTime=clock();
-	cout << "time: " << (stopTime-startTime)/double(CLOCKS_PER_SEC)*1000 << endl;
+  		for(int j=1;j<=n;j++)
+  		{
+  			cin>>a;
+  			if(a!=0)
+  			{
+  				g.push_back(make_pair(i,j));
+  				weight[make_pair(i,j)]=a;
+  			}
+  		}
+  	for(int i=1;i<=n;i++)
+  		bf(i);
+  	double stop_s=clock();
+	cout << "time: " << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << endl;
 
     return 0;
 }
