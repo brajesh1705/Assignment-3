@@ -1,1 +1,78 @@
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <cstring>
+#include <iomanip>
+#include <stdio.h>
+#include <limits>
+#include <map>
+#include  <set>
+#include <list>
+#include <vector>
+#include <ctime>
+#include <stack>
+#define mod 1000000007LL
+#define inf 1000000000
+using namespace std;
+vector<pair<long long,long long>> g;
+map<pair<long long,long long>,int>weight;
+int n;
+void solve(int root)
+{
+	int distance[n+1];
 
+	for(int i=1;i<=n;i++)
+		distance[i]=inf;
+	distance[root]=0;
+	for(int i=0;i<n-1;i++)
+	{
+		for(int j=0;j<g.size();j++)
+		{
+			int u=g[j].first;
+			int v=g[j].second;
+			if(distance[u]+weight[make_pair(u,v)]<distance[v]&&distance[u]!=inf)
+				distance[v]=distance[u]+weight[make_pair(u,v)];
+		}
+
+	}
+	for(int i=0;i<g.size();i++)
+	{
+		int u=g[i].first;
+		int v=g[i].second;
+		if(distance[u]+weight[make_pair(u,v)]<distance[v]&&distance[u]!=inf)
+		{
+			cout<<"spanning tree of "<<root<<" contains negative cycle\n";
+			break;
+		}
+	}
+	cout<<"distance from "<<root<<"->";
+	for(int i=1;i<=n;i++)
+	{
+			cout<<distance[i]<<" ";
+	}
+	cout<<endl;
+	return;
+}
+int main()
+{
+    
+    int startTime=clock();
+    cout<<"enter the number of vertices\n";
+  	cin>>n;
+  	cout<<"enter i j w\n";
+ 	int i,j,w;
+  	cin>>i>>j>>w;
+  	while (w)
+  	{
+  		g.push_back(make_pair(i,j));
+  		weight[make_pair(i,j)]=a;
+  		cin>>i>>j>>w;
+  	}
+  	cout<<"By bellman-ford algorithm\n";
+  	for(int i=1;i<=n;i++)
+  		solve(i);
+  	int stopTime=clock();
+	cout << "time: " << (stopTime-startTime)/double(CLOCKS_PER_SEC)*1000 << endl;
+
+    return 0;
+}
